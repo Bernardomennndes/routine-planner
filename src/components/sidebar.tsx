@@ -23,9 +23,9 @@ function RoutineItem(props: RoutineProps) {
     >
       {routine.name}
 
-      <button className="hidden group-hover:block">
+      <div role="button" className="hidden group-hover:block">
         <Ellipsis className="text-muted-foreground" />
-      </button>
+      </div>
     </button>
   );
 }
@@ -38,9 +38,8 @@ export function Sidebar(props: SidebarProps) {
   const { routine: selectedRoutine } = props;
 
   const routines = useRoutineStore((store) => store.routines);
-  const setRoutine = useRoutineStore((store) => store.setRoutine);
 
-  console.log(routines);
+  const setRoutine = useRoutineStore((store) => store.setRoutine);
 
   return (
     <div className="w-[320px] py-8 px-6 border-r border-border flex flex-col gap-3">
@@ -49,13 +48,13 @@ export function Sidebar(props: SidebarProps) {
       </div>
 
       <div className="flex flex-col gap-2">
-        {routines.map((routine) => (
+        {routines.map((routine, index) => (
           <RoutineItem
             key={routine.id}
             routine={routine}
             selected={routine.id === selectedRoutine?.id}
             onClick={() => {
-              setRoutine(routine.id);
+              setRoutine(index);
             }}
           />
         ))}
