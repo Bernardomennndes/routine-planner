@@ -50,7 +50,7 @@ export function BoardTaskForm(props: BoardTaskFormProps) {
     () =>
       Array.from(
         {
-          length: 23,
+          length: 24,
         },
         (_, index) => index
       ).map((hour) => ({
@@ -65,7 +65,7 @@ export function BoardTaskForm(props: BoardTaskFormProps) {
     () =>
       Array.from(
         {
-          length: 23,
+          length: 24,
         },
         (_, index) => index + 1
       ).map((hour) => ({
