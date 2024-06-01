@@ -13,7 +13,6 @@ export function BoardColumns(props: BoardColumnsProps) {
 
   const { days } = useBoard();
 
-  const routineIndex = useRoutineStore((store) => store.routineIndex);
   const deleteTask = useRoutineStore((store) => store.deleteTask);
 
   return (
@@ -28,8 +27,7 @@ export function BoardColumns(props: BoardColumnsProps) {
                 key={task.start}
                 task={task}
                 handleDeleteTask={() => {
-                  if (routineIndex !== undefined)
-                    deleteTask({ routineIndex, day, taskIndex: index });
+                  deleteTask({ day, taskIndex: index });
                 }}
               />
             ))}

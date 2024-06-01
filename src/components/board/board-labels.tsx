@@ -32,7 +32,6 @@ export function BoardLabels(props: BoardLabelsProps) {
 
   const { days } = useBoard();
 
-  const routineIndex = useRoutineStore((store) => store.routineIndex);
   const addTask = useRoutineStore((store) => store.addTask);
 
   const [dialogValues, setDialogValues] = React.useState<DialogContentValues>({
@@ -126,9 +125,8 @@ export function BoardLabels(props: BoardLabelsProps) {
 
             <BoardTaskForm
               onSubmit={(values) => {
-                if (routineIndex !== undefined && dialogValues.day) {
-                  addTask({ routineIndex, day: dialogValues.day, values });
-                  console.log({ routineIndex, day: dialogValues.day, values });
+                if (dialogValues.day !== undefined) {
+                  addTask({ day: dialogValues.day, values });
                   setDialogValues({ open: false });
                 }
               }}
