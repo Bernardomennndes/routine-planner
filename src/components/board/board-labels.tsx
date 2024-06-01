@@ -115,7 +115,7 @@ export function BoardLabels(props: BoardLabelsProps) {
           </DialogHeader>
 
           <div className="py-4 flex flex-col gap-4">
-            {dialogValues.day && (
+            {dialogValues.day !== undefined && (
               <div className="flex gap-1 items-center">
                 <div className="text-sm font-semibold">Dia:</div>
                 <Badge variant="outline" className="text-xs rounded-lg">
