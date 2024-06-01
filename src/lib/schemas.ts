@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 export const taskSchema = z.object({
-  name: z.string().min(10, {
-    message: "O nome da tarefa deve conter no mínimo 10 caracteres",
-  }),
+  name: z.string({ message: "Campo obrigatório" }),
   description: z
     .string()
     .min(20, {
@@ -11,11 +9,11 @@ export const taskSchema = z.object({
     })
     .optional(),
   start: z
-    .number()
+    .number({ message: "Campo obrigatório" })
     .min(0, { message: "O início da tarefa deve ser no mínimo as 0h" })
     .max(23, { message: "O início da tarefa deve ser no máximo as 0h" }),
   end: z
-    .number()
+    .number({ message: "Campo obrigatório" })
     .min(1, { message: "O término da tarefa deve ser no mínimo as 1h" })
     .max(24, { message: "O término da tarefa deve ser no máximo as 24h" }),
 });
