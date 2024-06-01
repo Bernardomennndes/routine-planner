@@ -12,6 +12,7 @@ import React from "react";
 import { formatDayOfWeek } from "@/lib/format";
 import { BoardTaskForm } from "./board-task-form";
 import { Badge } from "../ui/badge";
+import { useRoutineStore } from "@/stores/routine-store";
 
 type DialogContentValues = {
   open: boolean;
@@ -30,6 +31,9 @@ export function BoardLabels(props: BoardLabelsProps) {
   const { routine } = props;
 
   const { days } = useBoard();
+
+  const routineIndex = useRoutineStore((store) => store.routineIndex);
+  const addTask = useRoutineStore((store) => store.addTask);
 
   const [dialogValues, setDialogValues] = React.useState<DialogContentValues>({
     open: false,
@@ -122,7 +126,11 @@ export function BoardLabels(props: BoardLabelsProps) {
 
             <BoardTaskForm
               onSubmit={(values) => {
-                console.log(values);
+                if (routineIndex !== undefined && dialogValues.day) {
+                  addTask({ routineIndex, day: dialogValues.day, values });
+                  console.log({ routineIndex, day: dialogValues.day, values });
+                  setDialogValues({ open: false });
+                }
               }}
               unavailableTime={{
                 start: dialogValues.unavailableTime?.start,

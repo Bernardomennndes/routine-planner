@@ -1,3 +1,4 @@
+import { useRoutineStore } from "@/stores/routine-store";
 import type { Routine } from "../../models/routine";
 import { BoardColumn } from "./board-column";
 import { BoardTask } from "./board-task";
@@ -12,6 +13,9 @@ export function BoardColumns(props: BoardColumnsProps) {
 
   const { days } = useBoard();
 
+  const routineIndex = useRoutineStore((store) => store.routineIndex);
+  const deleteTask = useRoutineStore((store) => store.deleteTask);
+
   return (
     <div className="flex w-full">
       {Array.from({ length: days }, (_, index) => index).map((day) => {
@@ -19,8 +23,15 @@ export function BoardColumns(props: BoardColumnsProps) {
 
         return (
           <BoardColumn key={day}>
-            {daySchedule.map((task) => (
-              <BoardTask key={task.start} task={task} />
+            {daySchedule.map((task, index) => (
+              <BoardTask
+                key={task.start}
+                task={task}
+                handleDeleteTask={() => {
+                  if (routineIndex !== undefined)
+                    deleteTask({ routineIndex, day, taskIndex: index });
+                }}
+              />
             ))}
           </BoardColumn>
         );

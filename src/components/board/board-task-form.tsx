@@ -39,6 +39,9 @@ export function BoardTaskForm(props: BoardTaskFormProps) {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(taskSchema),
+    defaultValues: {
+      name: "",
+    },
   });
 
   const { end: formEndValue, start: formStartValue } = form.getValues();
@@ -126,7 +129,7 @@ export function BoardTaskForm(props: BoardTaskFormProps) {
             <FormItem className="col-span-1">
               <FormLabel>Hora de Início</FormLabel>
               <Select
-                onValueChange={field.onChange}
+                onValueChange={(value) => form.setValue("start", Number(value))}
                 defaultValue={field.value ? String(field.value) : undefined}
               >
                 <FormControl>
@@ -158,7 +161,7 @@ export function BoardTaskForm(props: BoardTaskFormProps) {
             <FormItem className="col-span-1">
               <FormLabel>Hora de Término</FormLabel>
               <Select
-                onValueChange={field.onChange}
+                onValueChange={(value) => form.setValue("end", Number(value))}
                 defaultValue={field.value ? String(field.value) : undefined}
               >
                 <FormControl>
