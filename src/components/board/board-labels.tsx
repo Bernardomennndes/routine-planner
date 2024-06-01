@@ -126,7 +126,10 @@ export function BoardLabels(props: BoardLabelsProps) {
 
             <BoardTaskForm
               onSubmit={(values) => {
-                if (routineIndex !== undefined && dialogValues.day) {
+                if (
+                  routineIndex !== undefined &&
+                  dialogValues.day !== undefined
+                ) {
                   addTask({ routineIndex, day: dialogValues.day, values });
                   console.log({ routineIndex, day: dialogValues.day, values });
                   setDialogValues({ open: false });
