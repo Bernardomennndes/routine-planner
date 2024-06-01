@@ -9,7 +9,7 @@ type BoardContextValue = {
 const defaultValue: BoardContextValue = {
   days: 7,
   hours: 24,
-  cellHeight: 64,
+  cellHeight: 80,
 };
 
 const BoardContext = React.createContext<BoardContextValue>(defaultValue);
