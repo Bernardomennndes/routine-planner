@@ -6,7 +6,5 @@ export type Task = {
 };
 
 export type Routine = {
-  id: string;
-  name: string;
   schedule: Record<number, Task[]>;
 };
