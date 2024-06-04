@@ -30,7 +30,11 @@ interface BoardLabelsProps {
 export function BoardLabels(props: BoardLabelsProps) {
   const { routine } = props;
 
-  const { days } = useBoard();
+  const {
+    config: {
+      dayRange: [rangeStart, rangeEnd],
+    },
+  } = useBoard();
 
   const addTask = useRoutineStore((store) => store.addTask);
 
@@ -84,7 +88,10 @@ export function BoardLabels(props: BoardLabelsProps) {
   return (
     <>
       <div className="w-full pl-[40px] flex">
-        {Array.from({ length: days }, (_, index) => index).map((day) => (
+        {Array.from(
+          { length: rangeEnd - rangeStart + 1 },
+          (_, index) => index + rangeStart
+        ).map((day) => (
           <div
             key={day}
             className="flex-1 flex justify-center gap-1 items-center text-muted-foreground capitalize text-sm"

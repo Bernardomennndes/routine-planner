@@ -11,13 +11,20 @@ interface BoardColumnsProps {
 export function BoardColumns(props: BoardColumnsProps) {
   const { routine } = props;
 
-  const { days } = useBoard();
+  const {
+    config: {
+      dayRange: [rangeStart, rangeEnd],
+    },
+  } = useBoard();
 
   const deleteTask = useRoutineStore((store) => store.deleteTask);
 
   return (
     <div className="flex w-full">
-      {Array.from({ length: days }, (_, index) => index).map((day) => {
+      {Array.from(
+        { length: rangeEnd - rangeStart + 1 },
+        (_, index) => index + rangeStart
+      ).map((day) => {
         const daySchedule = routine?.schedule[day] ?? [];
 
         return (

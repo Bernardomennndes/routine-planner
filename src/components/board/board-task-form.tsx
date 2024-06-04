@@ -23,6 +23,7 @@ import { Input } from "../ui/input";
 import React from "react";
 import { DialogClose } from "../ui/dialog";
 import { Button } from "../ui/button";
+import { useBoard } from "./context";
 
 type FormValues = z.infer<typeof taskSchema>;
 
@@ -37,44 +38,69 @@ interface BoardTaskFormProps {
 export function BoardTaskForm(props: BoardTaskFormProps) {
   const { unavailableTime, onSubmit: onSubmitProp } = props;
 
+  const {
+    config: {
+      timeRange: [rangeStart, rangeEnd],
+    },
+  } = useBoard();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(taskSchema),
-    defaultValues: {
-      name: "",
-    },
   });
 
-  const { end: formEndValue, start: formStartValue } = form.getValues();
+  const { end: formEndValue, start: formStartValue } = form.watch();
 
-  const startTimeRange = React.useMemo(
-    () =>
-      Array.from(
-        {
-          length: 24,
-        },
-        (_, index) => index
-      ).map((hour) => ({
-        value: hour,
-        label: `${hour}h`,
-        disabled: unavailableTime.start?.has(hour) || hour >= formEndValue,
-      })),
-    [unavailableTime, formEndValue]
-  );
+  const startTimeRange = React.useMemo(() => {
+    const closestMaximumValue =
+      (formEndValue &&
+        unavailableTime.start &&
+        Math.max(
+          ...Array.from(unavailableTime.start).filter(
+            (value) => value < formEndValue
+          )
+        )) ||
+      rangeStart;
 
-  const endTimeRange = React.useMemo(
-    () =>
-      Array.from(
-        {
-          length: 24,
-        },
-        (_, index) => index + 1
-      ).map((hour) => ({
-        value: hour,
-        label: `${hour}h`,
-        disabled: unavailableTime.end?.has(hour) || hour <= formStartValue,
-      })),
-    [unavailableTime, formStartValue]
-  );
+    return Array.from(
+      {
+        length: rangeEnd - rangeStart,
+      },
+      (_, index) => index + rangeStart
+    ).map((hour) => ({
+      value: hour,
+      label: `${hour}h`,
+      disabled:
+        unavailableTime.start?.has(hour) ||
+        hour >= formEndValue ||
+        hour < closestMaximumValue,
+    }));
+  }, [unavailableTime, formEndValue, rangeStart, rangeEnd]);
+
+  const endTimeRange = React.useMemo(() => {
+    const closestMinimumValue =
+      (formStartValue &&
+        unavailableTime.end &&
+        Math.min(
+          ...Array.from(unavailableTime.end).filter(
+            (value) => value > formStartValue
+          )
+        )) ||
+      rangeEnd;
+
+    return Array.from(
+      {
+        length: rangeEnd - rangeStart,
+      },
+      (_, index) => index + rangeStart + 1
+    ).map((hour) => ({
+      value: hour,
+      label: `${hour}h`,
+      disabled:
+        unavailableTime.end?.has(hour) ||
+        hour <= formStartValue ||
+        hour > closestMinimumValue,
+    }));
+  }, [unavailableTime, formStartValue, rangeStart, rangeEnd]);
 
   function onSubmit(values: FormValues) {
     onSubmitProp(values);
