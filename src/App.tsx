@@ -1,5 +1,5 @@
 import { Board } from "./components/board";
-import { useRoutineStore } from "./stores/routine-store";
+import { useRoutineStore } from "./stores/routine";
 
 function App() {
   const routine = useRoutineStore((store) => store.routine);

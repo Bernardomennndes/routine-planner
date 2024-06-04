@@ -1,4 +1,4 @@
-import { useRoutineStore } from "@/stores/routine-store";
+import { useRoutineStore } from "@/stores/routine";
 import type { Routine } from "../../models/routine";
 import { BoardColumn } from "./board-column";
 import { BoardTask } from "./board-task";

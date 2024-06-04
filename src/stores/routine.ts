@@ -52,7 +52,7 @@ export const useRoutineStore = create(
       partialize: (state) => ({ routine: state.routine }),
       merge: (persistedState, currentState) => ({
         ...currentState,
-        routines:
+        routine:
           (persistedState as PersistedState)?.routine ??
           currentState.routine ??
           [],

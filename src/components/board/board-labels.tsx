@@ -12,7 +12,7 @@ import React from "react";
 import { formatDayOfWeek } from "@/lib/format";
 import { BoardTaskForm } from "./board-task-form";
 import { Badge } from "../ui/badge";
-import { useRoutineStore } from "@/stores/routine-store";
+import { useRoutineStore } from "@/stores/routine";
 
 type DialogContentValues = {
   open: boolean;
