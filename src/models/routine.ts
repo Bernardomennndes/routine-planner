@@ -1,9 +1,7 @@
-export type Task = {
-  name: string;
-  description?: string;
-  start: number;
-  end: number;
-};
+import { taskSchema } from "@/lib/schemas";
+import { z } from "zod";
+
+export type Task = z.infer<typeof taskSchema>
 
 export type Routine = {
   schedule: Record<number, Task[]>;

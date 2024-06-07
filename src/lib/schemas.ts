@@ -5,11 +5,8 @@ export const taskSchema = z.object({
     .string({ message: "Campo obrigatório" })
     .min(1, { message: "Campo obrigatório" }),
   description: z
-    .string()
-    .min(20, {
-      message: "A descrição da tarefa deve conter no mínimo 20 caracteres",
-    })
-    .optional(),
+  .string()
+  .optional(),
   start: z
     .number({ message: "Campo obrigatório" })
     .min(0, { message: "O início da tarefa deve ser no mínimo as 0h" })
