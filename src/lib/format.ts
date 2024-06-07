@@ -1,8 +1,10 @@
 import { format, setDay } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import * as locales from "date-fns/locale";
 
-export function formatDayOfWeek(day: number) {
+/** Formats the day of week into a labeled name based on their number,
+ *  `0` being Sunday and `6` Saturday  */
+export function formatDayOfWeek(day: number, locale: keyof typeof locales = 'ptBR') {
   return format(setDay(new Date(), day), "EEEE", {
-    locale: ptBR,
+    locale: locales[locale],
   });
 }
