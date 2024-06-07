@@ -2,23 +2,33 @@ import { useBoard } from "./context";
 
 export function BoardAxis() {
   const {
-    config: {
+    settings: {
       timeRange: [rangeStart, rangeEnd],
       cellHeight,
     },
   } = useBoard();
 
   return (
-    <div className="w-[32px] flex flex-col items-end">
-      {Array.from({ length: rangeEnd - rangeStart }, (_, index) => index).map(
-        (hour) => (
-          <span
+    <div className="absolute w-full h-full">
+      {Array.from(
+        { length: rangeEnd - rangeStart + 1 },
+        (_, index) => index
+      ).map((hour, index) => (
+        <div
+          key={hour}
+          className="h-0 flex items-center gap-1 relative"
+          style={{
+            top: cellHeight * index,
+          }}
+        >
+          <div
             key={hour}
-            style={{ height: cellHeight, top: -(hour / 2) }}
-            className="text-xs text-muted-foreground relative"
-          >{`${hour}h -`}</span>
-        )
-      )}
+            className="absolute -left-6 text-xs text-muted-foreground"
+          >{`${hour}h`}</div>
+
+          <div className="w-full border-b border-dashed" />
+        </div>
+      ))}
     </div>
   );
 }

@@ -7,7 +7,7 @@ type BoardConfig = {
 };
 
 type BoardContextValue = {
-  config: BoardConfig;
+  settings: BoardConfig;
   setTimeRange: (timeRange: [number, number]) => void;
   setDayRange: (dayRange: [number, number]) => void;
 };
@@ -15,11 +15,11 @@ type BoardContextValue = {
 const defaultConfig: BoardConfig = {
   timeRange: [0, 24],
   dayRange: [0, 6],
-  cellHeight: 80,
+  cellHeight: 108,
 };
 
 const defaultContextValue: BoardContextValue = {
-  config: defaultConfig,
+  settings: defaultConfig,
   setTimeRange: function (): void {
     throw new Error("Function not implemented.");
   },
@@ -56,7 +56,7 @@ export function BoardProvider(props: BoardProviderProps) {
 
   const value = React.useMemo(
     () => ({
-      config: boardConfig,
+      settings: boardConfig,
       setTimeRange,
       setDayRange,
     }),

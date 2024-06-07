@@ -1,6 +1,5 @@
 import { useRoutineStore } from "@/stores/routine";
 import type { Routine } from "../../models/routine";
-import { BoardColumn } from "./board-column";
 import { BoardTask } from "./board-task";
 import { useBoard } from "./context";
 
@@ -12,10 +11,14 @@ export function BoardColumns(props: BoardColumnsProps) {
   const { routine } = props;
 
   const {
-    config: {
+    settings: {
       dayRange: [rangeStart, rangeEnd],
+      timeRange: [timeRangeStart, timeRangeEnd],
+      cellHeight,
     },
   } = useBoard();
+
+  const columnHeight = (timeRangeEnd - timeRangeStart) * cellHeight;
 
   const deleteTask = useRoutineStore((store) => store.deleteTask);
 
@@ -28,7 +31,10 @@ export function BoardColumns(props: BoardColumnsProps) {
         const daySchedule = routine?.schedule[day] ?? [];
 
         return (
-          <BoardColumn key={day}>
+          <div
+            style={{ height: columnHeight }}
+            className="flex-1 min-w-[320px] first:border-l border-r border-border grid grid-cols-1 grid-rows-[repeat(24,minmax(0,1fr))]"
+          >
             {daySchedule.map((task, index) => (
               <BoardTask
                 key={task.start}
@@ -38,7 +44,7 @@ export function BoardColumns(props: BoardColumnsProps) {
                 }}
               />
             ))}
-          </BoardColumn>
+          </div>
         );
       })}
     </div>

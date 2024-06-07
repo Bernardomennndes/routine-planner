@@ -39,7 +39,7 @@ export function BoardTaskForm(props: BoardTaskFormProps) {
   const { unavailableTime, onSubmit: onSubmitProp } = props;
 
   const {
-    config: {
+    settings: {
       timeRange: [rangeStart, rangeEnd],
     },
   } = useBoard();

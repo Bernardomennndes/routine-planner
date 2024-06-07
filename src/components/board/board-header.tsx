@@ -1,20 +1,20 @@
 import { useBoard } from "./context";
-import { Plus } from "lucide-react";
 import { Routine } from "@/models/routine";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "../ui/drawer";
 import React from "react";
 import { formatDayOfWeek } from "@/lib/format";
 import { BoardTaskForm } from "./board-task-form";
 import { Badge } from "../ui/badge";
 import { useRoutineStore } from "@/stores/routine";
+import { Plus } from "lucide-react";
 
-type DialogContentValues = {
+type DrawerContentValues = {
   open: boolean;
   day?: number;
   unavailableTime?: {
@@ -23,24 +23,26 @@ type DialogContentValues = {
   };
 };
 
-interface BoardLabelsProps {
+interface BoardHeaderProps {
   routine: Routine | undefined;
 }
 
-export function BoardLabels(props: BoardLabelsProps) {
+export function BoardHeader(props: BoardHeaderProps) {
   const { routine } = props;
 
   const {
-    config: {
+    settings: {
       dayRange: [rangeStart, rangeEnd],
     },
   } = useBoard();
 
   const addTask = useRoutineStore((store) => store.addTask);
 
-  const [dialogValues, setDialogValues] = React.useState<DialogContentValues>({
-    open: false,
-  });
+  const [contentValues, setContentValues] = React.useState<DrawerContentValues>(
+    {
+      open: false,
+    }
+  );
 
   function handleAddNewTask(day: number) {
     if (routine) {
@@ -74,7 +76,7 @@ export function BoardLabels(props: BoardLabelsProps) {
         [] as number[]
       );
 
-      setDialogValues({
+      setContentValues({
         open: true,
         day,
         unavailableTime: {
@@ -87,7 +89,7 @@ export function BoardLabels(props: BoardLabelsProps) {
 
   return (
     <>
-      <div className="w-full pl-[40px] flex">
+      <div className="w-full flex">
         {Array.from(
           { length: rangeEnd - rangeStart + 1 },
           (_, index) => index + rangeStart
@@ -98,53 +100,62 @@ export function BoardLabels(props: BoardLabelsProps) {
           >
             {formatDayOfWeek(day)}
 
-            <button onClick={() => handleAddNewTask(day)}>
+            <button
+              onClick={() => {
+                handleAddNewTask(day);
+              }}
+            >
               <Plus size={16} />
             </button>
           </div>
         ))}
       </div>
 
-      <Dialog
-        open={dialogValues.open}
+      <Drawer
+        open={contentValues.open}
         onOpenChange={(open) =>
-          setDialogValues((prevValues) => ({ ...prevValues, open }))
+          setContentValues((prevValues) => ({ ...prevValues, open }))
         }
       >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Adicionar Nova Tarefa</DialogTitle>
-            <DialogDescription>
-              Verifique e defina a faixa de horários disponíveis para a nova
-              tarefa
-            </DialogDescription>
-          </DialogHeader>
+        <DrawerContent className="pb-4">
+          <div className="container max-w-[800px]">
+            <DrawerHeader>
+              <DrawerTitle>Adicionar Nova Tarefa</DrawerTitle>
+              <DrawerDescription>
+                Verifique e defina a faixa de horários disponíveis para a nova
+                tarefa
+              </DrawerDescription>
+            </DrawerHeader>
 
-          <div className="py-4 flex flex-col gap-4">
-            {dialogValues.day !== undefined && (
-              <div className="flex gap-1 items-center">
-                <div className="text-sm font-semibold">Dia:</div>
-                <Badge variant="outline" className="text-xs rounded-lg">
-                  {formatDayOfWeek(dialogValues.day)}
-                </Badge>
-              </div>
-            )}
+            <div className="p-4 flex flex-col gap-4">
+              {contentValues.day !== undefined && (
+                <div className="flex gap-1 items-center">
+                  <div className="text-sm font-semibold">Dia:</div>
+                  <Badge
+                    variant="outline"
+                    className="text-xs rounded-lg capitalize"
+                  >
+                    {formatDayOfWeek(contentValues.day)}
+                  </Badge>
+                </div>
+              )}
 
-            <BoardTaskForm
-              onSubmit={(values) => {
-                if (dialogValues.day !== undefined) {
-                  addTask({ day: dialogValues.day, values });
-                  setDialogValues({ open: false });
-                }
-              }}
-              unavailableTime={{
-                start: dialogValues.unavailableTime?.start,
-                end: dialogValues.unavailableTime?.end,
-              }}
-            />
+              <BoardTaskForm
+                onSubmit={(values) => {
+                  if (contentValues.day !== undefined) {
+                    addTask({ day: contentValues.day, values });
+                    setContentValues({ open: false });
+                  }
+                }}
+                unavailableTime={{
+                  start: contentValues.unavailableTime?.start,
+                  end: contentValues.unavailableTime?.end,
+                }}
+              />
+            </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }
