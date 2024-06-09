@@ -13,12 +13,12 @@ import {
   AlertDialogFooter,
 } from "../ui/alert-dialog";
 
-interface TaskProps {
+interface TaskCardProps {
   task: Task;
   handleDeleteTask: () => void;
 }
 
-export function BoardTask(props: TaskProps) {
+export function TaskCard(props: TaskCardProps) {
   const {
     task: { end, name, start, description },
     handleDeleteTask,

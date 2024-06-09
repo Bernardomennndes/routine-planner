@@ -1,17 +1,11 @@
-import type { Routine } from "@/models/routine";
+import type { Routine, Task } from "@/models/routine";
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { z } from "zod";
-import { taskSchema } from "@/lib/schemas";
-
 type RoutineStoreState = {
   routine: Routine;
-  addTask: (values: {
-    day: number;
-    values: z.infer<typeof taskSchema>;
-  }) => void;
+  addTask: (values: { day: number; values: Task }) => void;
   deleteTask: (values: { day: number; taskIndex: number }) => void;
 };
 

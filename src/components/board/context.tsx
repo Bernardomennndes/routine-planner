@@ -28,7 +28,7 @@ const defaultContextValue: BoardContextValue = {
   },
 };
 
-const BoardContext = React.createContext<BoardContextValue | undefined>(
+export const BoardContext = React.createContext<BoardContextValue | undefined>(
   undefined
 );
 BoardContext.displayName = "BoardContext";

@@ -23,11 +23,12 @@ import { Input } from "../ui/input";
 import React from "react";
 import { DialogClose } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { useBoard } from "./context";
 
 type FormValues = z.infer<typeof taskSchema>;
 
-interface BoardTaskFormProps {
+interface TaskFormProps {
+  timeRange: [number, number];
+  defaultValues?: Partial<FormValues>;
   unavailableTime: {
     start: Set<number> | undefined;
     end: Set<number> | undefined;
@@ -35,17 +36,17 @@ interface BoardTaskFormProps {
   onSubmit: (values: FormValues) => void;
 }
 
-export function BoardTaskForm(props: BoardTaskFormProps) {
-  const { unavailableTime, onSubmit: onSubmitProp } = props;
-
+export function TaskForm(props: TaskFormProps) {
   const {
-    settings: {
-      timeRange: [rangeStart, rangeEnd],
-    },
-  } = useBoard();
+    unavailableTime,
+    timeRange: [rangeStart, rangeEnd],
+    defaultValues: defaultValuesProp,
+    onSubmit: onSubmitProp,
+  } = props;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(taskSchema),
+    defaultValues: defaultValuesProp,
   });
 
   const { end: formEndValue, start: formStartValue } = form.watch();
